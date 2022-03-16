@@ -8,31 +8,20 @@ import moodle_locators as locators
 from selenium.webdriver.support.ui import Select # --- add this import for drop down list
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import Keys
+from selenium.webdriver.chrome.options import Options
 
-# create a Chrome driver instance, specify path to chromedriver file, it launches the browser
-# this gives a DeprecationWarning
-# driver = webdriver.Chrome('/Users/razimkh/PycharmProjects/python_cctb2/chromedriver')
-# or driver = webdriver.Chrome('../chromedriver')
+options = Options()
+options.add_argument("--headless")
+options.add_argument("window-size=1400,1500")
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+options.add_argument("start-maximized")
+options.add_argument("enable-automation")
+options.add_argument("--disable-infobars")
+options.add_argument("--disable-dev-shm-usage")
 
-s = Service(executable_path='../chromedriver')
-driver = webdriver.Chrome(service=s)
+driver = webdriver.Chrome(options=options)
 
-# Moodle Test Automation Plan
-# launch Moodle App website - validate we are on the home page
-# navigate to login page - validate we are on the login page
-# login with admin account - validate we are on the Dashboard page
-# navigate to Add New User page - Site Administration > Users > Add New User - validate we are on the Add new user page
-# populate the new user from fields using Faker library fake random data
-# submit a new user form
-# validate new user added:
-# search for a new user using email - validate new is found
-# logout of admin account
-# or
-# login as a new user - validate a new user can login
-# logout of admin account
-# login with admin account
-# search for a new user using email address
-# delete new user
 
 def setUp():
     print(f'Launch {locators.app} App')
@@ -79,16 +68,6 @@ def log_in(username, password):
             driver.find_element(By.ID, 'password').send_keys(password)
             sleep(0.25)
             driver.find_element(By.ID, 'loginbtn').click() # method 1 using ID
-            # locators XPATH practice ----------------
-            #driver.find_element(By.XPATH, '//button[contains(., "Log in")]').click() # mehtod 2 - using XPATH
-            #driver.find_element(By.XPATH, '//button[contains(text(), "Log in")]').click() # mehtod 3 - using XPATH
-            #driver.find_element(By.XPATH, '//button[contains(@id, "loginbtn")]').click() # mehtod 4 - using XPATH + ID
-            #driver.find_element(By.XPATH, '//button[@id="loginbtn"]').click() # mehtod 5 using XPATH + id
-            #driver.find_element(By.XPATH, '//*[@id="loginbtn"]').click() # method 6 using XPATH + id
-            #driver.find_element(By.CSS_SELECTOR, 'button#loginbtn').click() # method 7 using CSS_SELECTOR
-            #driver.find_element(By.CSS_SELECTOR, 'button[id="loginbtn"]').click() # method 8 using CSS_SELECTOR
-
-            #breakpoint()
             # ------------------------------
             # validate login successfull - Dashboard page is displayed
             if driver.current_url == locators.moodle_dashboard_url and driver.title == locators.moodle_dashboard_title:
@@ -170,10 +149,7 @@ def create_new_user():
         sleep(0.25)
 
     # select a radio button
-    # Method 1 - click the radio button
     driver.find_element(By.XPATH, '//input[@value="4"]').click()
-    # method 2 - click the label attached to radio button
-    #driver.find_element(By.XPATH, '//label[contains(., "Create an alias/shortcut to the file"').click()
     sleep(0.25)
     driver.find_element(By.XPATH, '//button[contains(text(), "Select this file")]').click()
     sleep(0.25)
@@ -200,14 +176,8 @@ def create_new_user():
 
     for tag in locators.list_of_interests:
         driver.find_element(By.XPATH, '//input[contains(@id, "form_autocomplete_input")]').send_keys(tag + '\n')
-        #driver.find_element(By.XPATH, '//input[contains(@id, "form_autocomplete_input")]').send_keys(tag + ',')
-        #driver.find_element(By.XPATH, '//input[contains(@id, "form_autocomplete_input")]').send_keys(Keys.ENTER)
         sleep(0.25)
-    # for i in range(3):
-    #     driver.find_element(By.XPATH, '//input[contains(@id, "form_autocomplete_input")]').send_keys(locators.fake.job() + '\n')
 
-    #populate optional fields
-    #driver.find_element(By.LINK_TEXT, 'Optional').click()
     driver.find_element(By.XPATH, '//a[text()="Optional"]').click()
 
     for i in range(len(locators.lst_opt)):
@@ -245,11 +215,6 @@ def search_user():
                 print(f'--- User {locators.full_name} / {locators.email} / System id: {locators.sysid} is found! ----')
             except NoSuchElementException as nse:
                 print(f'{locators.email} does not exist')
-            # if usercheck:
-            #     print(f'--- User {locators.full_name} / {locators.email} / System id: {locators.sysid} is found! ----')
-            #
-            # else:
-            #     print(f'--- User {locators.full_name} / {locators.email} was not found!')
 
 
 def check_new_user_can_login():
@@ -284,18 +249,7 @@ def delete_user():
     print('--------------- check if the user has been deleted successfully ---------------')
     # confirm delete
     search_user()
-    #href="http://52.39.5.126/admin/user.php?sort=name&amp;dir=ASC&amp;perpage=30&amp;page=0&amp;delete=1461&amp;sesskey=0dvCQNwUvM" id="yui_3_17_2_1_1646165230582_558"
-    #print(deletecheck)
-    # if deletecheck:
-    #     driver.find_element(By.XPATH,f'//td[contains(., "{locators.email}")]/../td/a[contains(@href, "delete={locators.sysid}")]').click()
-    #     driver.find_element(By.XPATH, '//button[text()="Delete"]').click()
-    #     sleep(0.25)
-    #     print(f'--- User {locators.email}, System ID: {locators.sysid} is deleted at: {datetime.datetime.now()}')
-    # else:
-    #     print(f'User is not found! ')
-
-
-
+    
 # setUp()
 # log_in(locators.admin_username, locators.admin_password)
 # create_new_user()
