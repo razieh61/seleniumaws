@@ -142,11 +142,11 @@ def create_new_user():
     sleep(0.5)
 
     # upload picture
-    driver.find_element(By.CLASS_NAME, 'dndupload-arrow').click()
-    img_path = ['System', 'Technology', 'Software Testing', 'Software Manual Testing', 'Course image', 'Mannual-Testing.jpg']
-    for p in img_path:
-        driver.find_element(By.LINK_TEXT, p).click()
-        sleep(0.25)
+    # driver.find_element(By.CLASS_NAME, 'dndupload-arrow').click()
+    # img_path = ['System', 'Technology', 'Software Testing', 'Software Manual Testing', 'Course image', 'Mannual-Testing.jpg']
+    # for p in img_path:
+    #     driver.find_element(By.LINK_TEXT, p).click()
+    #     sleep(0.25)
 
     # select a radio button
     driver.find_element(By.XPATH, '//input[@value="4"]').click()
@@ -249,7 +249,7 @@ def delete_user():
     print('--------------- check if the user has been deleted successfully ---------------')
     # confirm delete
     search_user()
-    
+
 # setUp()
 # log_in(locators.admin_username, locators.admin_password)
 # create_new_user()
