@@ -149,12 +149,12 @@ def create_new_user():
     #     sleep(0.25)
 
     # select a radio button
-    driver.find_element(By.XPATH, '//input[@value="4"]').click()
-    sleep(0.25)
-    driver.find_element(By.XPATH, '//button[contains(text(), "Select this file")]').click()
-    sleep(0.25)
-    driver.find_element(By.ID, 'id_imagealt').send_keys(locators.pic_desc)
-    sleep(0.25)
+    # driver.find_element(By.XPATH, '//input[@value="4"]').click()
+    # sleep(0.25)
+    # driver.find_element(By.XPATH, '//button[contains(text(), "Select this file")]').click()
+    # sleep(0.25)
+    # driver.find_element(By.ID, 'id_imagealt').send_keys(locators.pic_desc)
+    # sleep(0.25)
 
     # populate Additional names section
     driver.find_element(By.LINK_TEXT, 'Additional names').click() # click to expand the section
